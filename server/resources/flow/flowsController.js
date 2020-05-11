@@ -10,8 +10,9 @@
  */
 
 let Flow = require('mongoose').model('Flow');
+let Task = require('mongoose').model('Task');
 
-exports.list = (req, res) => {
+exports.list = async (req, res) => {
   if(req.query.page) {
     // paginate on the server
     var page = req.query.page || 1;
@@ -34,13 +35,33 @@ exports.list = (req, res) => {
     });
   } else {
     // list all flows
-    Flow.find({}).exec((err, flows) => {
+    Flow.find({}).exec(async (err, flows) => {
       if(err || !flows) {
         logger.error("ERROR:");
         logger.info(err);
         res.send({ success: false, message: err });
       } else {
-        res.send({ success: true, flows: flows });
+        let tasks;
+        let subFlow = {};
+        let newFlows = [];
+        for(let flow of flows) {
+          subFlow = {};
+          subFlow.created = flow.created;
+          subFlow.description = flow.description;
+          subFlow.name = flow.name;
+          subFlow.updated = flow.updated;
+          subFlow.__v = flow.__v;
+          subFlow._id = flow._id;
+          try {
+            tasks = await Task.find({_flow: flow.id}).exec();
+            subFlow.tasks = tasks;
+          } catch(e) {
+            console.log("Error Occured");
+            console.log(e);
+          }
+          newFlows.push(subFlow);
+        }
+        res.send({ success: true, flows: newFlows });
       }
     });
   }
@@ -152,7 +173,7 @@ exports.search = (req, res) => {
 
 exports.getById = (req, res) => {
   logger.info('get flow by id');
-  Flow.findById(req.params.id).exec((err, flow) => {
+  Flow.findById(req.params.id).exec(async (err, flow) => {
     if(err) {
       logger.error("ERROR:");
       logger.info(err);
@@ -161,7 +182,24 @@ exports.getById = (req, res) => {
       logger.error("ERROR: Flow not found.");
       res.send({ success: false, message: "Flow not found." });
     } else {
-      res.send({ success: true, flow: flow });
+      let tasks;
+      let subFlow = {};
+      subFlow.created = flow.created;
+      subFlow.description = flow.description;
+      subFlow.name = flow.name;
+      subFlow.updated = flow.updated;
+      subFlow.__v = flow.__v;
+      subFlow._id = flow._id;
+
+      try {
+        tasks = await Task.find({_flow: flow.id}).exec();
+        subFlow.tasks = tasks;
+      } catch(e) {
+        console.log("Error Occured");
+        console.log(e);
+      }
+
+      res.send({ success: true, flow: subFlow });
     }
   });
 }

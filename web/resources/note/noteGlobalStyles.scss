@@ -3,3 +3,16 @@
  * Any styles specific to the Note module that you ALSO want globally
  * available should live here.
  */
+
+ .comment-container  {
+   .form-container {
+     border: 0;
+     &:hover {
+       box-shadow: none;
+     }
+
+     form {
+       padding-left: 0;
+     }
+   }
+ }

@@ -5,3 +5,55 @@
  */
 
 @import "./admin/flowAdminStyles";
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.approved-task-container {
+  h3 {
+    text-decoration: line-through;
+  }
+
+  h1 {
+    font-style: italic;
+  }
+}
+
+.flow-list-container {
+  display: flex;
+  justify-content: center;
+
+  .flowtask-table {
+    width: 30%;
+    margin: 0 20px;
+    border: 2px solid #c3cfd9;
+    padding: 0 20px;
+
+    .flow {
+      padding-bottom: 10px;
+      border-bottom: 2px solid #c3cfd9;
+    }
+
+    .task {
+      & > li {
+        display: flex;
+        align-items: center;
+        margin: 10px 0;
+      }
+    }
+  }
+}
+
+.task-list {
+
+  li {
+    display: flex;
+    align-items: flex-start;
+    margin-top: 2em;
+    h3 {
+      margin-top: 0;
+    }
+  }
+}

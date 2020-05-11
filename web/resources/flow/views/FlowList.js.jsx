@@ -22,6 +22,7 @@ import Binder from '../../../global/components/Binder.js.jsx';
 // import resource components
 import FlowLayout from '../components/FlowLayout.js.jsx';
 import FlowListItem from '../components/FlowListItem.js.jsx';
+import ITaskCheckbox from '../../../global/components/forms/ITaskCheckbox.js.jsx';
 
 class FlowList extends Binder {
   constructor(props) {
@@ -53,7 +54,7 @@ class FlowList extends Binder {
      * to the actual flow objetcs
      */
     const flowListItems = flowStore.util.getList("all");
-
+    
     /**
      * NOTE: isEmpty is is usefull when the component references more than one
      * resource list.
@@ -68,22 +69,57 @@ class FlowList extends Binder {
       || !flowList
       || flowList.isFetching
     )
-
     return (
       <FlowLayout>
-        <h1> Flow List </h1>
+        <div className="content-header">
+          <div className="title-description-container">
+            <div className="title">
+              <h1> Flows </h1>
+            </div>
+          </div>
+          <div className="btn-container">
+            <Link className="yt-btn x-small" to={'/flows/new'}> New Flow </Link>
+          </div>
+        </div>
+
         <hr/>
-        <Link to={'/flows/new'}> New Flow </Link>
+
         <br/>
         { isEmpty ?
           (isFetching ? <h2>Loading...</h2> : <h2>Empty.</h2>)
           :
           <div style={{ opacity: isFetching ? 0.5 : 1 }}>
-            <ul>
-              {flowListItems.map((flow, i) =>
-                <FlowListItem key={flow._id + i} flow={flow} />
-              )}
-            </ul>
+            <div className="flow-list-container">
+            {flowListItems.map((flow, i) => 
+              <div key={flow._id + i} className="flowtask-table">
+                <ul className="flow">
+                  <li key={flow._id + i}>
+                    <Link to={`/flows/${flow._id}`}> {flow.name}</Link>
+                  </li>
+                </ul>
+                {
+                (flow.tasks && flow.tasks.length > 0) ?
+                <ul className="task">
+                {flow.tasks.map((task, i) => 
+                  <li key={task._id + i} >
+                    <div>
+                      <ITaskCheckbox
+                        completed={task.complete}
+                        status={task.status}
+                        view="flowlist"
+                      />
+                    </div>
+                    <Link to={`/tasks/${task._id}`}> {task.name}</Link>
+                  </li>
+                )}
+                </ul>
+                :
+                ''
+                }
+              </div>
+            )}
+            </div>
+
           </div>
         }
       </FlowLayout>

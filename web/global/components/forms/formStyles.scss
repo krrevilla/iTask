@@ -1,0 +1,56 @@
+.checkbox-container {
+  border: 2px solid #c3cfd9;
+  width: 35px;
+  height: 35px;
+  position: relative;
+  background-color: #dfe7ed;
+  margin-right: 16px;
+
+  .checkmark {
+    left: 5px;
+    top: 5px;
+    width: 20px;
+    height: 12px;
+    border: solid white;
+    border-width: 0 0 3px 3px;
+    -webkit-transform: rotate(-50deg);
+    -ms-transform: rotate(-50deg);
+    transform: rotate(-50deg);
+    position: absolute;
+  }
+
+  &.approve {
+    background-color: #1bae9f;
+    border-color: #1bae9f;
+  }
+
+  &.approve-purple {
+    background-color: #6557f5;
+    border-color: #6557f5;
+  }
+
+  &.reject {
+    background-color: #d3455b;
+    border-color: #d3455b;
+  }
+}
+
+[yt-btn], a.yt-btn, .yt-btn {
+  background-color: #6557f5;
+
+  &:hover {
+    background-color: #6557f5;
+  }
+
+  &.bordered {
+    border: 2px solid #6557f5;
+    color: #6557f5;
+  }
+
+  &.bordered:hover {
+    background-color: #6557f5 !important;
+    color: #fff !important;
+    border-color: #6557f5 !important;
+  }
+}
+

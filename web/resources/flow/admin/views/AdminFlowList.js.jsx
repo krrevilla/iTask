@@ -73,7 +73,7 @@ class FlowList extends Binder {
     return (
       <AdminFlowLayout>
         <Breadcrumbs links={location.state.breadcrumbs} />
-        <h1> Flow List </h1>
+        <h1> Flows </h1>
         <hr/>
         <br/>
         { isEmpty ?

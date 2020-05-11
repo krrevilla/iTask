@@ -5,3 +5,46 @@
  */
 
 @import "./admin/taskAdminStyles";
+
+@import "../../global/utils/customHeaderStyles";
+
+.comment-list {
+  list-style: none;
+  padding: 0;
+
+  & > li {
+    display: grid;
+    grid-template-columns: 10% 90%;
+
+    .profile-pic-wrapper {
+      display: flex;
+      align-items: center;
+      margin: auto;
+
+      .profile-pic {
+        height: 36px;
+        width: 36px;
+        border-radius: 50%;
+        margin-right: 10px;
+        background-image: url(/img/green_army_men.jpg);
+        background-position: center;
+        background-size: cover;
+      }
+    }
+  }
+}
+
+.btn-admin-container {
+  margin: 16px 0;
+  .yt-btn {
+    &.approve {
+      margin-right: 30px;
+      background-color: #1bae9f;
+    }
+
+    &.reject {
+      background-color: #d3455b;
+    }
+  }
+}
+

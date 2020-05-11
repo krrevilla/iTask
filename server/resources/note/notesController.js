@@ -88,13 +88,22 @@ exports.listByRefs = (req, res) => {
         query[nextParams.split("/")[i]] = nextParams.split("/")[i+1] === 'null' ? null : nextParams.split("/")[i+1]
       }
     }
-    Note.find(query, (err, notes) => {
+
+    Note.find(query).populate('_user').exec((err, notes) => {
       if(err || !notes) {
         res.send({success: false, message: `Error retrieving notes by ${req.params.refKey}: ${req.params.refId}`});
       } else {
         res.send({success: true, notes})
       }
-    })
+    });
+    
+    // Note.find(query, (err, notes) => {
+    //   if(err || !notes) {
+    //     res.send({success: false, message: `Error retrieving notes by ${req.params.refKey}: ${req.params.refId}`});
+    //   } else {
+    //     res.send({success: true, notes})
+    //   }
+    // })
   }
 }
 

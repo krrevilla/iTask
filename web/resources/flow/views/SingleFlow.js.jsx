@@ -21,6 +21,7 @@ import Binder from '../../../global/components/Binder.js.jsx';
 // import resource components
 import FlowLayout from '../components/FlowLayout.js.jsx';
 import TaskForm from '../../task/components/TaskForm.js.jsx';
+import ITaskCheckbox from '../../../global/components/forms/ITaskCheckbox.js.jsx';
 
 class SingleFlow extends Binder {
   constructor(props) {
@@ -101,7 +102,6 @@ class SingleFlow extends Binder {
      */
     const selectedFlow = flowStore.selected.getItem();
 
-
     // get the taskList meta info here so we can reference 'isFetching'
     const taskList = taskStore.lists && taskStore.lists._flow ? taskStore.lists._flow[match.params.flowId] : null;
 
@@ -129,12 +129,15 @@ class SingleFlow extends Binder {
     const isTaskListFetching = (
       !taskListItems
       || !taskList
-      || taskList.isFetching
+      ||
+       taskList.isFetching
     )
 
+    const approvedTaskItems = (taskListItems) ? taskListItems.filter((task) => { return task.complete }) : [];
+    const notApprovedTaskItems = (taskListItems) ? taskListItems.filter((task) => { return !task.complete }) : [];
 
     const isNewTaskEmpty = !task;
-
+    
     return (
       <FlowLayout>
         <h3> Single Flow </h3>
@@ -142,20 +145,37 @@ class SingleFlow extends Binder {
           (isFlowFetching ? <h2>Loading...</h2> : <h2>Empty.</h2>)
           :
           <div style={{ opacity: isFlowFetching ? 0.5 : 1 }}>
-            <h1> { selectedFlow.name }
-            </h1>
-            <p> { selectedFlow.description }</p>
-            <Link className="yt-btn x-small bordered" to={`${this.props.match.url}/update`}> Edit </Link>
+            <div className="content-header">
+              <div className="title-description-container">
+                <div className="title">
+                  <h1> { selectedFlow.name } </h1>
+                </div>
+                <p> { selectedFlow.description }</p>
+              </div>
+              <div className="btn-container">
+                <Link className="yt-btn x-small" to={`${this.props.match.url}/update`}> Edit </Link>
+              </div>
+            </div>
             <hr/>
             { isTaskListEmpty ?
               (isTaskListFetching ? <h2>Loading...</h2> : <h2>Empty.</h2>)
               :
               <div style={{ opacity: isTaskListFetching ? 0.5 : 1 }}>
-                <ul>
-                  {taskListItems.map((task, i) =>
+                <ul className="task-list">
+                  {notApprovedTaskItems.map((task, i) =>
                     <li key={task._id + i}>
-                      <h3>{task.name}</h3>
-                      <p>{task.description}</p>
+                      <div>
+                        <ITaskCheckbox
+                          completed={task.complete}
+                          status={task.status}
+                          view="single-flow"
+                        />
+                      </div>
+                      <div>
+                        <h3>{task.name}</h3>
+                        <p>{task.description}</p>
+                        <Link className="yt-btn x-small bordered"  to={`/tasks/${task._id}`}>Comment</Link>
+                      </div>
                     </li>
                   )}
                 </ul>
@@ -175,6 +195,27 @@ class SingleFlow extends Binder {
               </div>
               : 
               <button className="yt-btn" onClick={() => this.setState({showTaskForm: true})}>Add new task</button>
+            }
+            <hr/>
+            {
+              isTaskListEmpty ?
+              (isTaskListFetching ? <h2>Loading...</h2> : <h2>Empty.</h2>)
+              :
+              <div className="approved-task-container" style={{ opacity: isTaskListFetching ? 0.5 : 1 }}>
+                <h1>Completed Task</h1>
+                <ul className="task-list">
+                  {approvedTaskItems.map((task, i) =>
+                    <li key={task._id + i}>
+                    <ITaskCheckbox
+                      completed={task.complete}
+                      status={task.status}
+                      view="single-flow"
+                    />
+                      <h3>{task.name}</h3>
+                    </li>
+                  )}
+                </ul>
+              </div>
             }
           </div>
         }
@@ -196,6 +237,7 @@ const mapStoreToProps = (store) => {
     defaultTask: store.task.defaultItem
     , flowStore: store.flow
     , taskStore: store.task
+    , selectedFlow: store.flow.selected
   }
 }
 
