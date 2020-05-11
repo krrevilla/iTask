@@ -1,0 +1,23 @@
+.content-header {
+  display: grid;
+  grid-template-columns: 50% 50%;
+
+  .title-description-container {
+    text-align: left;
+
+    .title {
+      display: flex;
+      align-items: center;
+
+      h1 {
+        margin-bottom: 0.67em;
+      }
+    }
+  }
+
+  .btn-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+}
