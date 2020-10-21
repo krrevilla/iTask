@@ -58,10 +58,9 @@ class AdminSingleTask extends Binder {
           (isFetching ? <h2>Loading...</h2> : <h2>Empty.</h2>)
           :
           <div style={{ opacity: isFetching ? 0.5 : 1 }}>
-            <h1> { selectedTask.name }
-            </h1>
+            <h1> { selectedTask.name }</h1>
+            <p> <em>{selectedTask.description}.</em></p>
             <hr/>
-            <p> <em>Other characteristics about the Task would go here.</em></p>
             <br/>
             <Link to={`${this.props.match.url}/update`}> Update Task </Link>
           </div>

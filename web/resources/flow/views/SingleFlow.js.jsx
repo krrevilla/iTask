@@ -156,6 +156,7 @@ class SingleFlow extends Binder {
                     <li key={task._id + i}>
                       <h3>{task.name}</h3>
                       <p>{task.description}</p>
+                    <Link className="yt-btn x-small bordered" to={`/tasks/${task._id}`}> Comment </Link>
                     </li>
                   )}
                 </ul>

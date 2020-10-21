@@ -21,7 +21,10 @@ import createHistory from 'history/createBrowserHistory';
 import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-router-redux';
 
 // instantiate tap event plugin
-injectTapEventPlugin();
+/**
+ * Note: I had to disable it, it was producing error, and unable for the app to show.
+ */
+// injectTapEventPlugin();
 
 
 // import scss files.
